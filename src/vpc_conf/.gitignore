@@ -1,1 +1,9 @@
-*.exe
+*.class
+nbproject/private/
+build/
+dist/
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
