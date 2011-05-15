@@ -1,0 +1,15 @@
+*.exe
+*.ilk
+*.pdb
+*.ncb
+*.suo
+*.obj
+*.res
+*.pch
+*.obj
+*.dep
+*.obj
+*.idb
+*.pdb
+*.aps
+*.user
