@@ -1,7 +1,6 @@
 /*
  * Vpc_confView.java
  */
-
 package vpc_conf;
 
 import org.jdesktop.application.Action;
@@ -19,9 +18,10 @@ import javax.swing.JFrame;
 /**
  * The application's main frame.
  */
-public class Vpc_confView extends FrameView {
+public class Vpc_confView
+        extends FrameView {
 
-    public Vpc_confView(SingleFrameApplication app) {
+    public Vpc_confView(SingleFrameApplication app){
         super(app);
 
         initComponents();
@@ -30,17 +30,20 @@ public class Vpc_confView extends FrameView {
         ResourceMap resourceMap = getResourceMap();
         int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
         messageTimer = new Timer(messageTimeout, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+
+            public void actionPerformed(ActionEvent e){
                 statusMessageLabel.setText("");
             }
         });
         messageTimer.setRepeats(false);
-        int busyAnimationRate = resourceMap.getInteger("StatusBar.busyAnimationRate");
-        for (int i = 0; i < busyIcons.length; i++) {
+        int busyAnimationRate = resourceMap.getInteger(
+                "StatusBar.busyAnimationRate");
+        for (int i = 0 ; i < busyIcons.length ; i++) {
             busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
         }
         busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+
+            public void actionPerformed(ActionEvent e){
                 busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
                 statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
             }
@@ -52,7 +55,8 @@ public class Vpc_confView extends FrameView {
         // connecting action tasks to status bar via TaskMonitor
         TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
         taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+
+            public void propertyChange(java.beans.PropertyChangeEvent evt){
                 String propertyName = evt.getPropertyName();
                 if ("started".equals(propertyName)) {
                     if (!busyIconTimer.isRunning()) {
@@ -82,7 +86,7 @@ public class Vpc_confView extends FrameView {
     }
 
     @Action
-    public void showAboutBox() {
+    public void showAboutBox(){
         if (aboutBox == null) {
             JFrame mainFrame = Vpc_confApp.getApplication().getMainFrame();
             aboutBox = new Vpc_confAboutBox(mainFrame);
@@ -188,7 +192,6 @@ public class Vpc_confView extends FrameView {
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
@@ -197,12 +200,10 @@ public class Vpc_confView extends FrameView {
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
     // End of variables declaration//GEN-END:variables
-
     private final Timer messageTimer;
     private final Timer busyIconTimer;
     private final Icon idleIcon;
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
-
     private JDialog aboutBox;
 }

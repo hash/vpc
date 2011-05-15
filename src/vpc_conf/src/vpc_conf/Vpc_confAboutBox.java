@@ -1,20 +1,21 @@
 /*
  * Vpc_confAboutBox.java
  */
-
 package vpc_conf;
 
 import org.jdesktop.application.Action;
 
-public class Vpc_confAboutBox extends javax.swing.JDialog {
+public class Vpc_confAboutBox
+        extends javax.swing.JDialog {
 
-    public Vpc_confAboutBox(java.awt.Frame parent) {
+    public Vpc_confAboutBox(java.awt.Frame parent){
         super(parent);
         initComponents();
         getRootPane().setDefaultButton(closeButton);
     }
 
-    @Action public void closeAboutBox() {
+    @Action
+    public void closeAboutBox(){
         dispose();
     }
 
@@ -129,9 +130,7 @@ public class Vpc_confAboutBox extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeButton;
     // End of variables declaration//GEN-END:variables
-    
 }
