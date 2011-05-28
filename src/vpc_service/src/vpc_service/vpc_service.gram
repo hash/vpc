@@ -1,0 +1,5 @@
+#JSGF V1.0;
+
+grammar vpc_service;
+
+public <greet> = (chrome);
