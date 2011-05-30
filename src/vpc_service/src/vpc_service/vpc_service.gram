@@ -2,4 +2,4 @@
 
 grammar vpc_service;
 
-public <greet> = (chrome);
+public <greet> = (chrome | mail);
