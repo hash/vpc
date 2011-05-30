@@ -46,7 +46,7 @@ public class Vpc_service {
                 String os = System.getProperty("os.name").toLowerCase();
                 Runtime rt = Runtime.getRuntime();
 
-                try
+                /*try
                 {
                     // this doesn't support showing urls in the form of "page.html#nameLink" 
                     rt.exec( "rundll32 url.dll,FileProtocolHandler " + resultText);
@@ -54,7 +54,7 @@ public class Vpc_service {
                 catch (Exception e)
                 {
                     return;
-                }  
+                }*/ 
                 
             } else {
                 System.out.println("I can't hear what you said.\n");
