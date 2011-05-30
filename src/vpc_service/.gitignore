@@ -2,7 +2,6 @@
 nbproject/private/
 build/
 dist/
-lib/
 *~
 *.lock
 *.DS_Store
