@@ -1,6 +1,8 @@
 *.class
 nbproject/private/
 build/
+bld/
+bin/
 dist/
 *~
 *.lock
