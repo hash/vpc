@@ -32,6 +32,10 @@ public class VoiceCommand {
         this.acoustic = acoustic;
     }
 
+    public String getAcoustic(){
+        return acoustic;
+    }
+
     public VoiceCommand(String acoustic, String command, String name){
         this.acoustic = acoustic;
         this.command = command;
