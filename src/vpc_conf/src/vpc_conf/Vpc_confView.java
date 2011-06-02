@@ -11,6 +11,7 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultListModel;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
@@ -22,11 +23,9 @@ import javax.swing.JFrame;
 public class Vpc_confView
         extends FrameView {
 
-    VoiceCommandModel vcModel = VoiceCommandModel.getModel();
-
     public Vpc_confView(SingleFrameApplication app){
         super(app);
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("VPC konfigurator");
         frame.setMinimumSize(new Dimension(400, 200));
         frame.pack();
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -94,6 +93,27 @@ public class Vpc_confView
         Vpc_confApp.getApplication().show(aboutBox);
     }
 
+    @Action
+    public void showAddVCDialog(){
+        addVCInstance();
+        Vpc_confApp.getApplication().show(addVC);
+        if (addVC.isCommandSet()) {
+            ((DefaultListModel)VoiceCommands.getModel()).addElement(
+                    addVC.getVc());
+        }
+        VoiceCommands.updateUI();
+        VoiceCommands.repaint();
+        addVC.dispose();
+    }
+
+    private void addVCInstance(){
+        if (addVC == null) {
+            JFrame mainFrame = Vpc_confApp.getApplication().getMainFrame();
+            addVC = new AddVCDialog(mainFrame, true);
+            addVC.setLocationRelativeTo(mainFrame);
+        }
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -105,14 +125,14 @@ public class Vpc_confView
 
         mainPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        VoiceCommands = new javax.swing.JList();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        glos = new javax.swing.JButton();
+        usun = new javax.swing.JButton();
+        komenda = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        AddVC = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
@@ -129,25 +149,35 @@ public class Vpc_confView
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+        VoiceCommands.setModel(VoiceCommandModel.getModel());
+        VoiceCommands.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        VoiceCommands.setName("VoiceCommands");
+        VoiceCommands.setNextFocusableComponent(glos);
+        VoiceCommands.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                VoiceCommandsValueChanged(evt);
+            }
         });
-        jList1.setName("jList1"); // NOI18N
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(VoiceCommands);
 
         jPanel1.setName("jPanel1"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(vpc_conf.Vpc_confApp.class).getContext().getResourceMap(Vpc_confView.class);
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
+        glos.setText(resourceMap.getString("glos.text")); // NOI18N
+        glos.setEnabled(false);
+        glos.setName("glos"); // NOI18N
 
-        jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
-        jButton2.setName("jButton2"); // NOI18N
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(vpc_conf.Vpc_confApp.class).getContext().getActionMap(Vpc_confView.class, this);
+        usun.setAction(actionMap.get("DeleteVC")); // NOI18N
+        usun.setText(resourceMap.getString("usun.text")); // NOI18N
+        usun.setEnabled(false);
+        usun.setName("usun"); // NOI18N
+        usun.setNextFocusableComponent(VoiceCommands);
 
-        jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
-        jButton3.setName("jButton3"); // NOI18N
+        komenda.setAction(actionMap.get("setCommand")); // NOI18N
+        komenda.setText(resourceMap.getString("komenda.text")); // NOI18N
+        komenda.setEnabled(false);
+        komenda.setName("komenda"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -155,11 +185,11 @@ public class Vpc_confView
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addComponent(glos)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+                .addComponent(komenda, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(usun)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -167,9 +197,9 @@ public class Vpc_confView
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(glos)
+                    .addComponent(usun)
+                    .addComponent(komenda))
                 .addContainerGap())
         );
 
@@ -193,10 +223,12 @@ public class Vpc_confView
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
-        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
-        jMenuItem1.setName("jMenuItem1"); // NOI18N
-        fileMenu.add(jMenuItem1);
+        AddVC.setAction(actionMap.get("showAddVCDialog")); // NOI18N
+        AddVC.setText(resourceMap.getString("AddVC.text")); // NOI18N
+        AddVC.setName("AddVC"); // NOI18N
+        fileMenu.add(AddVC);
 
+        jMenuItem2.setAction(actionMap.get("DeleteVC")); // NOI18N
         jMenuItem2.setText(resourceMap.getString("jMenuItem2.text")); // NOI18N
         jMenuItem2.setName("jMenuItem2"); // NOI18N
         fileMenu.add(jMenuItem2);
@@ -211,7 +243,6 @@ public class Vpc_confView
         jSeparator2.setName("jSeparator2"); // NOI18N
         fileMenu.add(jSeparator2);
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(vpc_conf.Vpc_confApp.class).getContext().getActionMap(Vpc_confView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
         fileMenu.add(exitMenuItem);
@@ -263,23 +294,58 @@ public class Vpc_confView
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void VoiceCommandsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_VoiceCommandsValueChanged
+        if (evt.getValueIsAdjusting()) {
+            return;
+        }
+        if (VoiceCommands.isSelectionEmpty()) {
+            //glos.setEnabled(false);
+            usun.setEnabled(false);
+            komenda.setEnabled(false);
+        } else {
+            //glos.setEnabled(true);
+            usun.setEnabled(true);
+            komenda.setEnabled(true);
+        }
+    }//GEN-LAST:event_VoiceCommandsValueChanged
+
+    @Action
+    public void setCommand(){
+        addVCInstance();
+        addVC.setVc((VoiceCommand)VoiceCommands.getSelectedValue());
+        Vpc_confApp.getApplication().show(addVC);
+        ((DefaultListModel)VoiceCommands.getModel()).set(VoiceCommands.
+                getSelectedIndex(), addVC.getVc());
+        VoiceCommands.updateUI();
+        VoiceCommands.repaint();
+        addVC.dispose();
+    }
+
+    @Action
+    public void DeleteVC(){
+        ((DefaultListModel)VoiceCommands.getModel()).remove(VoiceCommands.
+                getSelectedIndex());
+        VoiceCommands.updateUI();
+        VoiceCommands.repaint();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JMenuItem AddVC;
+    private javax.swing.JList VoiceCommands;
+    private javax.swing.JButton glos;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
-    private javax.swing.JList jList1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JButton komenda;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
+    private javax.swing.JButton usun;
     // End of variables declaration//GEN-END:variables
     private final Timer messageTimer;
     private final Timer busyIconTimer;
@@ -287,4 +353,5 @@ public class Vpc_confView
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
     private JDialog aboutBox;
+    private AddVCDialog addVC;
 }

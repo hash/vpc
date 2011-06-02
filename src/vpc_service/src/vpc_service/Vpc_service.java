@@ -1,4 +1,3 @@
-
 package vpc_service;
 
 import edu.cmu.sphinx.frontend.util.Microphone;
@@ -6,11 +5,10 @@ import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.result.Result;
 import edu.cmu.sphinx.util.props.ConfigurationManager;
 
-
 public class Vpc_service {
 
-    public static void main(String[] args) {        
-        
+    public static void main(String[] args) {
+
         ConfigurationManager cm;
 
         if (args.length > 0) {
@@ -41,21 +39,21 @@ public class Vpc_service {
             if (result != null) {
                 String resultText = result.getBestFinalResultNoFiller();
                 System.out.println("You said: " + resultText + '\n');
-                
+
                 //String url = "chrome";
                 String os = System.getProperty("os.name").toLowerCase();
                 Runtime rt = Runtime.getRuntime();
 
                 /*try
                 {
-                    // this doesn't support showing urls in the form of "page.html#nameLink" 
-                    rt.exec( "rundll32 url.dll,FileProtocolHandler " + resultText);
+                // this doesn't support showing urls in the form of "page.html#nameLink" 
+                rt.exec( "rundll32 url.dll,FileProtocolHandler " + resultText);
                 }
                 catch (Exception e)
                 {
-                    return;
-                }*/ 
-                
+                return;
+                }*/
+
             } else {
                 System.out.println("I can't hear what you said.\n");
             }
