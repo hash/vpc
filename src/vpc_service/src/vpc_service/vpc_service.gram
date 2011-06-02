@@ -2,4 +2,10 @@
 
 grammar vpc_service;
 
-public <greet> = (chrome | mail);
+
+public <greet> = hello;
+public <run> = run <app>;
+public <global> = show all | close | hide all | switch right | switch left |
+                  scroll down | scroll up | cancel | search;
+
+       <app> = browser | mail | music | notes;

@@ -1,14 +1,29 @@
+
 package vpc_service;
 
 import edu.cmu.sphinx.frontend.util.Microphone;
 import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.result.Result;
 import edu.cmu.sphinx.util.props.ConfigurationManager;
+import java.awt.AWTException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/*
+ * TODO
+ *  - wyłapać wyjątki
+ *  - lista komend
+ *  - cala reszta
+ */
+
 
 public class Vpc_service {
 
-    public static void main(String[] args) {
-
+    private static Obey o;
+    public static void main(String[] args) throws IOException, AWTException {        
+        o = new Obey();
+        
         ConfigurationManager cm;
 
         if (args.length > 0) {
@@ -28,34 +43,26 @@ public class Vpc_service {
             System.exit(1);
         }
 
-        System.out.println("Say: (chrome)");
+        //System.out.println("Say: (chrome)");
+        o.cmdList();
 
         // loop the recognition until the programm exits.
         while (true) {
-            System.out.println("Start speaking. Press Ctrl-C to quit.\n");
+            System.out.println("say command  |  ctrl-C - quit.\n");
 
             Result result = recognizer.recognize();
 
             if (result != null) {
                 String resultText = result.getBestFinalResultNoFiller();
-                System.out.println("You said: " + resultText + '\n');
-
-                //String url = "chrome";
-                String os = System.getProperty("os.name").toLowerCase();
-                Runtime rt = Runtime.getRuntime();
-
-                /*try
-                {
-                // this doesn't support showing urls in the form of "page.html#nameLink" 
-                rt.exec( "rundll32 url.dll,FileProtocolHandler " + resultText);
+                System.out.println("command: " + resultText + '\n');
+                try {
+                    o.command(resultText);
+                } catch (AWTException ex) {
+                    Logger.getLogger(Vpc_service.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                catch (Exception e)
-                {
-                return;
-                }*/
-
+                
             } else {
-                System.out.println("I can't hear what you said.\n");
+                System.out.println("I can't hear shit!\n");
             }
         }
     }
