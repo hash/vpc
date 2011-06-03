@@ -1,0 +1,14 @@
+hello
+show all
+hide all
+close
+switch right
+switch left
+scroll down
+scroll up
+cancel
+search
+save
+run browser	firefox.exe
+run music	winamp.exe
+run notes	notepad.exe

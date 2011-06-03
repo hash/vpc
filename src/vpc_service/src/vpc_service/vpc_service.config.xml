@@ -97,7 +97,7 @@
         <property name="grammarLocation"
              value="resource:/vpc_service/"/>
         <property name="grammarName" value="vpc_service"/>
-        <property name="logMath" value="logMath"/>
+	<property name="logMath" value="logMath"/>
     </component>
 
 
@@ -242,16 +242,16 @@
     <component name="memoryTracker"
                 type="edu.cmu.sphinx.instrumentation.MemoryTracker">
         <property name="recognizer" value="${recognizer}"/>
-        <property name="showSummary" value="false"/>
-        <property name="showDetails" value="false"/>
+	<property name="showSummary" value="false"/>
+	<property name="showDetails" value="false"/>
     </component>
 
     <component name="speedTracker"
                 type="edu.cmu.sphinx.instrumentation.SpeedTracker">
         <property name="recognizer" value="${recognizer}"/>
         <property name="frontend" value="${frontend}"/>
-        <property name="showSummary" value="true"/>
-        <property name="showDetails" value="false"/>
+	<property name="showSummary" value="true"/>
+	<property name="showDetails" value="false"/>
     </component>
 
 
@@ -265,3 +265,18 @@
     </component>
 
 </config>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
