@@ -2,8 +2,6 @@
 
 grammar VPC;
 
-public <global> = show all | close | hide all | switch right | switch left |
-                  scroll down | scroll up | cancel | search | save;
+public <global> = show all | close | hide all | switch right | switch left | scroll down | scroll up | cancel | search | save;
 
-public <run> = run <app>;
-       <app> = browser | mail | music | notes;
+public <run> = run browser | run music | run notes | run mail | run and play;

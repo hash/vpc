@@ -20,7 +20,7 @@ public class VoiceCommandModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return 4;
+        return 5;
     }
     
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -30,6 +30,7 @@ public class VoiceCommandModel extends AbstractTableModel {
             case 1: return vcl.get(rowIndex).name;
             case 2: return vcl.get(rowIndex).command;
             case 3: return vcl.get(rowIndex).request;
+            case 4: return vcl.get(rowIndex).options;
             default: return "!!!";
         }
     }
@@ -42,7 +43,8 @@ public class VoiceCommandModel extends AbstractTableModel {
             case 0: return "Lp.";
             case 1: return "Nazwa";
             case 2: return "Komenda";
-            case 3: return "Wykonaj";
+            case 3: return "Aplikacja";
+            case 4: return "Opcje";
             default: return "!!!";
         }
     }

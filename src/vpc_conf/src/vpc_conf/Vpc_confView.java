@@ -157,8 +157,11 @@ public class Vpc_confView extends FrameView {
         String s;
         while((s = br.readLine()) != null)
         {
-            ListaKomend.vcl.add(new VoiceCommand(s.split("\t")[0], s.split("\t")[1], s.split("\t")[2]));
-	}
+            if(s.split("\t").length == 3)
+                ListaKomend.vcl.add(new VoiceCommand(s.split("\t")[0], s.split("\t")[1], s.split("\t")[2]));
+            else if(s.split("\t").length == 4)
+                ListaKomend.vcl.add(new VoiceCommand(s.split("\t")[0], s.split("\t")[1], s.split("\t")[2], s.split("\t")[3]));
+        }
         fr.close();
     }
     
@@ -217,8 +220,8 @@ public class Vpc_confView extends FrameView {
         mainPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         glos = new javax.swing.JButton();
-        usun = new javax.swing.JButton();
         komenda = new javax.swing.JButton();
+        usun = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         VoiceCommands = new javax.swing.JTable();
         menuBar = new javax.swing.JMenuBar();
@@ -246,14 +249,14 @@ public class Vpc_confView extends FrameView {
         glos.setName("glos"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(vpc_conf.Vpc_confApp.class).getContext().getActionMap(Vpc_confView.class, this);
+        komenda.setAction(actionMap.get("showEditVCDialog")); // NOI18N
+        komenda.setText(resourceMap.getString("komenda.text")); // NOI18N
+        komenda.setName("komenda"); // NOI18N
+
         usun.setAction(actionMap.get("DeleteVC")); // NOI18N
         usun.setText(resourceMap.getString("usun.text")); // NOI18N
         usun.setName("usun"); // NOI18N
         usun.setNextFocusableComponent(VoiceCommands);
-
-        komenda.setAction(actionMap.get("showEditVCDialog")); // NOI18N
-        komenda.setText(resourceMap.getString("komenda.text")); // NOI18N
-        komenda.setName("komenda"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -263,10 +266,10 @@ public class Vpc_confView extends FrameView {
                 .addContainerGap()
                 .addComponent(glos)
                 .addGap(18, 18, 18)
-                .addComponent(komenda, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+                .addComponent(komenda, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(usun)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -274,8 +277,8 @@ public class Vpc_confView extends FrameView {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(glos)
-                    .addComponent(usun)
-                    .addComponent(komenda))
+                    .addComponent(komenda)
+                    .addComponent(usun))
                 .addContainerGap())
         );
 
@@ -292,9 +295,9 @@ public class Vpc_confView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -359,11 +362,11 @@ public class Vpc_confView extends FrameView {
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 711, Short.MAX_VALUE)
+            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 691, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 518, Short.MAX_VALUE)
                 .addComponent(statusAnimationLabel)
                 .addContainerGap())
         );

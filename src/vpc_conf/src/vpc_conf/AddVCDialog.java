@@ -10,6 +10,7 @@
  */
 package vpc_conf;
 
+import javax.swing.JFileChooser;
 import org.jdesktop.application.Action;
 
 /**
@@ -38,6 +39,7 @@ public class AddVCDialog extends javax.swing.JDialog {
             textName.setText(ListaKomend.vcl.get(tableRow).name);
             textCommand.setText(ListaKomend.vcl.get(tableRow).command);
             textRequest.setText(ListaKomend.vcl.get(tableRow).request);
+            textOptions.setText(ListaKomend.vcl.get(tableRow).options);
         }
     }
 
@@ -58,6 +60,9 @@ public class AddVCDialog extends javax.swing.JDialog {
         textRequest = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         textName = new javax.swing.JTextField();
+        textOptions = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        bBrowse = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(vpc_conf.Vpc_confApp.class).getContext().getResourceMap(AddVCDialog.class);
@@ -107,6 +112,17 @@ public class AddVCDialog extends javax.swing.JDialog {
             }
         });
 
+        textOptions.setText(resourceMap.getString("textOptions.text")); // NOI18N
+        textOptions.setName("textOptions"); // NOI18N
+
+        jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
+        jLabel4.setName("jLabel4"); // NOI18N
+
+        bBrowse.setAction(actionMap.get("browseBox")); // NOI18N
+        bBrowse.setText(resourceMap.getString("bBrowse.text")); // NOI18N
+        bBrowse.setActionCommand(resourceMap.getString("bBrowse.actionCommand")); // NOI18N
+        bBrowse.setName("bBrowse"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,11 +142,14 @@ public class AddVCDialog extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel1))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel4))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(textCommand, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
-                            .addComponent(textRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE))))
+                            .addComponent(textRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                            .addComponent(textOptions, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                            .addComponent(bBrowse))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -148,7 +167,13 @@ public class AddVCDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addGap(6, 6, 6)
+                .addComponent(bBrowse)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Anuluj)
                     .addComponent(OK))
@@ -188,7 +213,15 @@ public class AddVCDialog extends javax.swing.JDialog {
             }
         });
     }
-
+    
+    @Action
+    public void browseBox()
+    {
+        JFileChooser fc = new JFileChooser();
+        fc.showOpenDialog(null);
+        this.textRequest.setText(fc.getSelectedFile().getPath());
+    }
+    
     @Action
     public void OKHide(){
         if(edit)
@@ -196,9 +229,10 @@ public class AddVCDialog extends javax.swing.JDialog {
             ListaKomend.vcl.get(tableRow).name = textName.getText();
             ListaKomend.vcl.get(tableRow).command = textCommand.getText();
             ListaKomend.vcl.get(tableRow).request = textRequest.getText();
+            ListaKomend.vcl.get(tableRow).options = textOptions.getText();
         }
         else
-            ListaKomend.vcl.add(new VoiceCommand(textName.getText(), textCommand.getText(), textRequest.getText()));
+            ListaKomend.vcl.add(new VoiceCommand(textName.getText(), textCommand.getText(), textRequest.getText(), textOptions.getText()));
 
         this.dispose();
         ListaKomend.fireTableDataChanged();
@@ -216,15 +250,19 @@ public class AddVCDialog extends javax.swing.JDialog {
         textRequest.setText("");
         textCommand.setText("");
         textName.setText("");
+        textOptions.setText("");
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Anuluj;
     private javax.swing.JButton OK;
+    private javax.swing.JButton bBrowse;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField textCommand;
     public javax.swing.JTextField textName;
+    private javax.swing.JTextField textOptions;
     private javax.swing.JTextField textRequest;
     // End of variables declaration//GEN-END:variables
 }

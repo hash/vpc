@@ -43,11 +43,14 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="textCommand" pref="318" max="32767" attributes="0"/>
                           <Component id="textRequest" alignment="0" pref="318" max="32767" attributes="0"/>
+                          <Component id="textOptions" alignment="0" pref="318" max="32767" attributes="0"/>
+                          <Component id="bBrowse" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -73,7 +76,14 @@
                   <Component id="textRequest" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="31" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <Component id="bBrowse" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="textOptions" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel4" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="30" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="Anuluj" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="OK" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -149,6 +159,28 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textOptions">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="textOptions.text"/>
+        <Property name="name" type="java.lang.String" value="textOptions" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel4">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="jLabel4.text"/>
+        <Property name="name" type="java.lang.String" value="jLabel4" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="bBrowse">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="vpc_conf.AddVCDialog" id="browseBox" methodName="browseBox"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="bBrowse.text"/>
+        <Property name="actionCommand" type="java.lang.String" resourceKey="bBrowse.actionCommand"/>
+        <Property name="name" type="java.lang.String" value="bBrowse" noResource="true"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

@@ -10,17 +10,27 @@ package vpc_conf;
  */
 public class VoiceCommand {
     
-    public String name, command, request;
+    public String name, command, request, options = "";
 
     public VoiceCommand(String name, String command, String request){
-        this.request = request;
+        this.request = request.replace("\"", ""); //usuwa nadprogramowe cudzysłowy
         this.command = command;
         this.name = name;
     }
     
+    public VoiceCommand(String name, String command, String request, String options){
+        this.request = request.replace("\"", ""); //usuwa nadprogramowe cudzysłowy
+        this.command = command;
+        this.name = name;
+        this.options = options;
+    }
+    
     public String To_cmdlist_File()
-    {        
-        return name + "\t" + command + "\t" + request + "\r\n";
+    {     
+        if(options.equals(""))
+            return name + "\t" + command + "\t" + request + "\r\n";
+        else        
+            return name + "\t" + command + "\t\"" + request + "\"\t" + options  +"\r\n";
     }
     
     public String To_gram_File(boolean ostatni)
