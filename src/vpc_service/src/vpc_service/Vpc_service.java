@@ -10,17 +10,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
- * TODO
- *  - wyłapać wyjątki
- *  - lista komend
- *  - cala reszta
- */
-
-
 public class Vpc_service {
 
     private static Obey o;
+    
     public static void main(String[] args) throws IOException, AWTException {        
         o = new Obey();
         
@@ -48,13 +41,13 @@ public class Vpc_service {
 
         // loop the recognition until the programm exits.
         while (true) {
-            System.out.println("say command  |  ctrl-C - quit.\n");
+            System.out.println("Wypowiedz komendę!  |  ctrl-C - quit.\n");
 
             Result result = recognizer.recognize();
 
             if (result != null) {
                 String resultText = result.getBestFinalResultNoFiller();
-                System.out.println("command: " + resultText + '\n');
+                System.out.println("komenda: " + resultText + '\n');
                 try {
                     o.command(resultText);
                 } catch (AWTException ex) {
@@ -62,7 +55,7 @@ public class Vpc_service {
                 }
                 
             } else {
-                System.out.println("I can't hear shit!\n");
+                System.out.println("Nie słyszę Cie!\n");
             }
         }
     }

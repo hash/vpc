@@ -133,7 +133,7 @@ public class Vpc_confView
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         AddVC = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        usunMenu = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -228,10 +228,11 @@ public class Vpc_confView
         AddVC.setName("AddVC"); // NOI18N
         fileMenu.add(AddVC);
 
-        jMenuItem2.setAction(actionMap.get("DeleteVC")); // NOI18N
-        jMenuItem2.setText(resourceMap.getString("jMenuItem2.text")); // NOI18N
-        jMenuItem2.setName("jMenuItem2"); // NOI18N
-        fileMenu.add(jMenuItem2);
+        usunMenu.setAction(actionMap.get("DeleteVC")); // NOI18N
+        usunMenu.setText(resourceMap.getString("usunMenu.text")); // NOI18N
+        usunMenu.setEnabled(false);
+        usunMenu.setName("usunMenu"); // NOI18N
+        fileMenu.add(usunMenu);
 
         jSeparator1.setName("jSeparator1"); // NOI18N
         fileMenu.add(jSeparator1);
@@ -302,10 +303,12 @@ public class Vpc_confView
         if (VoiceCommands.isSelectionEmpty()) {
             //glos.setEnabled(false);
             usun.setEnabled(false);
+            usunMenu.setEnabled(false);
             komenda.setEnabled(false);
         } else {
             //glos.setEnabled(true);
             usun.setEnabled(true);
+            usunMenu.setEnabled(true);
             komenda.setEnabled(true);
         }
     }//GEN-LAST:event_VoiceCommandsValueChanged
@@ -334,7 +337,6 @@ public class Vpc_confView
     private javax.swing.JList VoiceCommands;
     private javax.swing.JButton glos;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -346,6 +348,7 @@ public class Vpc_confView
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
     private javax.swing.JButton usun;
+    private javax.swing.JMenuItem usunMenu;
     // End of variables declaration//GEN-END:variables
     private final Timer messageTimer;
     private final Timer busyIconTimer;
