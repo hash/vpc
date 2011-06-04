@@ -81,7 +81,7 @@ public class Obey {
     private void readCmdList() throws FileNotFoundException, IOException
     {
         cmdList = new HashMap();
-        FileReader fr = new FileReader("cmdlist.txt");
+        FileReader fr = new FileReader("../cmdlist.txt");
         BufferedReader br = new BufferedReader(fr);
         String s;
         while((s = br.readLine()) != null)

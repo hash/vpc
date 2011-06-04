@@ -23,7 +23,9 @@ public class Vpc_service {
             cm = new ConfigurationManager(args[0]);
         } else {
             cm = new ConfigurationManager(Vpc_service.class.getResource("vpc_service.config.xml"));
+            //cm = new ConfigurationManager("file:/../../vpc_service.config.xml"); //url jeśli config byłby w katalogu razem z .gram
         }
+        
 
         Recognizer recognizer = (Recognizer) cm.lookup("recognizer");
         recognizer.allocate();

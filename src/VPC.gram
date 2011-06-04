@@ -1,9 +1,9 @@
 #JSGF V1.0;
 
-grammar vpc_service;
+grammar VPC;
 
-public <run> = run <app>;
 public <global> = show all | close | hide all | switch right | switch left |
                   scroll down | scroll up | cancel | search | save;
 
+public <run> = run <app>;
        <app> = browser | mail | music | notes;

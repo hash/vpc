@@ -95,8 +95,8 @@
     <component name="jsgfGrammar" type="edu.cmu.sphinx.jsgf.JSGFGrammar">
         <property name="dictionary" value="dictionary"/>
         <property name="grammarLocation"
-             value="resource:/vpc_service/"/>
-        <property name="grammarName" value="vpc_service"/>
+             value="file:../"/> <!-- wyjście katalog wyżej do pliku .gram -->
+        <property name="grammarName" value="VPC"/>
 	<property name="logMath" value="logMath"/>
     </component>
 
