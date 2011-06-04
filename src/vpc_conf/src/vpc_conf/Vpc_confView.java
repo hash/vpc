@@ -11,19 +11,28 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.DefaultListModel;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  * The application's main frame.
  */
-public class Vpc_confView
-        extends FrameView {
+public class Vpc_confView extends FrameView {
 
-    public Vpc_confView(SingleFrameApplication app){
+    private VoiceCommandModel ListaKomend = new VoiceCommandModel();
+    
+    public Vpc_confView(SingleFrameApplication app) throws FileNotFoundException, IOException{
         super(app);
         JFrame frame = new JFrame("VPC konfigurator");
         frame.setMinimumSize(new Dimension(400, 200));
@@ -32,6 +41,9 @@ public class Vpc_confView
         frame.setResizable(false);
         this.setFrame(frame);
         initComponents();
+        
+        Odczyt_cmdlist();
+        
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
         int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
@@ -83,6 +95,11 @@ public class Vpc_confView
         });
     }
 
+    public int getTableRow()
+    {
+        return VoiceCommands.getSelectedRow();
+    }
+    
     @Action
     public void showAboutBox(){
         if (aboutBox == null) {
@@ -95,25 +112,99 @@ public class Vpc_confView
 
     @Action
     public void showAddVCDialog(){
-        addVCInstance();
+        
+        JFrame mainFrame = Vpc_confApp.getApplication().getMainFrame();
+        addVC = new AddVCDialog(mainFrame, true, ListaKomend, false, getTableRow());
+        addVC.setLocationRelativeTo(mainFrame);
         Vpc_confApp.getApplication().show(addVC);
-        if (addVC.isCommandSet()) {
-            ((DefaultListModel)VoiceCommands.getModel()).addElement(
-                    addVC.getVc());
-        }
-        VoiceCommands.updateUI();
-        VoiceCommands.repaint();
-        addVC.dispose();
+        
+        Zapis();
     }
+    
+        @Action
+    public void showEditVCDialog() {
 
-    private void addVCInstance(){
-        if (addVC == null) {
-            JFrame mainFrame = Vpc_confApp.getApplication().getMainFrame();
-            addVC = new AddVCDialog(mainFrame, true);
+        if(getTableRow() != -1)
+        {
+             JFrame mainFrame = Vpc_confApp.getApplication().getMainFrame();
+            addVC = new AddVCDialog(mainFrame, true, ListaKomend, true, getTableRow());
             addVC.setLocationRelativeTo(mainFrame);
+            Vpc_confApp.getApplication().show(addVC);
         }
+
+        Zapis();
     }
 
+    @Action
+    public void DeleteVC()
+    {
+        if(getTableRow() != -1)
+        {
+            if(JOptionPane.showConfirmDialog(mainPanel, "Napewno usunąć?", "Potwierdź usunięcie", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
+            {
+                ListaKomend.vcl.remove(getTableRow());
+                ListaKomend.fireTableDataChanged();
+            }
+        }
+        
+        Zapis();
+    }    
+        
+    private void Odczyt_cmdlist() throws FileNotFoundException, IOException
+    {
+        FileReader fr = new FileReader("../cmdlist.txt");
+        BufferedReader br = new BufferedReader(fr);
+        String s;
+        while((s = br.readLine()) != null)
+        {
+            ListaKomend.vcl.add(new VoiceCommand(s.split("\t")[0], s.split("\t")[1], s.split("\t")[2]));
+	}
+        fr.close();
+    }
+    
+    private void Zapis()
+    {
+        try
+        {
+//zapis komend do cmdlist.txt
+            FileWriter fw = new FileWriter("../cmdlist.txt");
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            for(VoiceCommand vc : ListaKomend.vcl)
+            {
+                bw.write(vc.To_cmdlist_File());
+            }
+            
+            bw.close();
+            fw.close();
+            
+//zapis komend do VPC.gram
+            fw = new FileWriter("../VPC.gram");
+            bw = new BufferedWriter(fw);
+
+            bw.write("#JSGF V1.0;\r\n\r\ngrammar VPC;\r\n\r\npublic <global> = show all | close | hide all | switch right | switch left | scroll down | scroll up | cancel | search | save;\r\n\r\npublic <run> = ");
+            
+            int i = 0;
+            
+            for(VoiceCommand vc : ListaKomend.vcl)
+            {
+                i++;
+
+                if(ListaKomend.vcl.size() > i)
+                    bw.write(vc.To_gram_File(false));
+                else
+                    bw.write(vc.To_gram_File(true));
+            }
+
+            bw.close();
+            fw.close();
+        }
+        catch(Exception ex)
+        {
+            Logger.getLogger(Vpc_confView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -124,12 +215,12 @@ public class Vpc_confView
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        VoiceCommands = new javax.swing.JList();
         jPanel1 = new javax.swing.JPanel();
         glos = new javax.swing.JButton();
         usun = new javax.swing.JButton();
         komenda = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        VoiceCommands = new javax.swing.JTable();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         AddVC = new javax.swing.JMenuItem();
@@ -147,19 +238,6 @@ public class Vpc_confView
 
         mainPanel.setName("mainPanel"); // NOI18N
 
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
-        VoiceCommands.setModel(VoiceCommandModel.getModel());
-        VoiceCommands.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        VoiceCommands.setName("VoiceCommands");
-        VoiceCommands.setNextFocusableComponent(glos);
-        VoiceCommands.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                VoiceCommandsValueChanged(evt);
-            }
-        });
-        jScrollPane1.setViewportView(VoiceCommands);
-
         jPanel1.setName("jPanel1"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(vpc_conf.Vpc_confApp.class).getContext().getResourceMap(Vpc_confView.class);
@@ -170,13 +248,11 @@ public class Vpc_confView
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(vpc_conf.Vpc_confApp.class).getContext().getActionMap(Vpc_confView.class, this);
         usun.setAction(actionMap.get("DeleteVC")); // NOI18N
         usun.setText(resourceMap.getString("usun.text")); // NOI18N
-        usun.setEnabled(false);
         usun.setName("usun"); // NOI18N
         usun.setNextFocusableComponent(VoiceCommands);
 
-        komenda.setAction(actionMap.get("setCommand")); // NOI18N
+        komenda.setAction(actionMap.get("showEditVCDialog")); // NOI18N
         komenda.setText(resourceMap.getString("komenda.text")); // NOI18N
-        komenda.setEnabled(false);
         komenda.setName("komenda"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -187,7 +263,7 @@ public class Vpc_confView
                 .addContainerGap()
                 .addComponent(glos)
                 .addGap(18, 18, 18)
-                .addComponent(komenda, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+                .addComponent(komenda, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(usun)
                 .addContainerGap())
@@ -203,19 +279,31 @@ public class Vpc_confView
                 .addContainerGap())
         );
 
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        VoiceCommands.setModel(ListaKomend);
+        VoiceCommands.setName("VoiceCommands"); // NOI18N
+        jScrollPane1.setViewportView(VoiceCommands);
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 647, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE))
+                .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -230,7 +318,6 @@ public class Vpc_confView
 
         usunMenu.setAction(actionMap.get("DeleteVC")); // NOI18N
         usunMenu.setText(resourceMap.getString("usunMenu.text")); // NOI18N
-        usunMenu.setEnabled(false);
         usunMenu.setName("usunMenu"); // NOI18N
         fileMenu.add(usunMenu);
 
@@ -272,11 +359,11 @@ public class Vpc_confView
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 647, Short.MAX_VALUE)
+            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 711, Short.MAX_VALUE)
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 627, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 691, Short.MAX_VALUE)
                 .addComponent(statusAnimationLabel)
                 .addContainerGap())
         );
@@ -296,45 +383,9 @@ public class Vpc_confView
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void VoiceCommandsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_VoiceCommandsValueChanged
-        if (evt.getValueIsAdjusting()) {
-            return;
-        }
-        if (VoiceCommands.isSelectionEmpty()) {
-            //glos.setEnabled(false);
-            usun.setEnabled(false);
-            usunMenu.setEnabled(false);
-            komenda.setEnabled(false);
-        } else {
-            //glos.setEnabled(true);
-            usun.setEnabled(true);
-            usunMenu.setEnabled(true);
-            komenda.setEnabled(true);
-        }
-    }//GEN-LAST:event_VoiceCommandsValueChanged
-
-    @Action
-    public void setCommand(){
-        addVCInstance();
-        addVC.setVc((VoiceCommand)VoiceCommands.getSelectedValue());
-        Vpc_confApp.getApplication().show(addVC);
-        ((DefaultListModel)VoiceCommands.getModel()).set(VoiceCommands.
-                getSelectedIndex(), addVC.getVc());
-        VoiceCommands.updateUI();
-        VoiceCommands.repaint();
-        addVC.dispose();
-    }
-
-    @Action
-    public void DeleteVC(){
-        ((DefaultListModel)VoiceCommands.getModel()).remove(VoiceCommands.
-                getSelectedIndex());
-        VoiceCommands.updateUI();
-        VoiceCommands.repaint();
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AddVC;
-    private javax.swing.JList VoiceCommands;
+    private javax.swing.JTable VoiceCommands;
     private javax.swing.JButton glos;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JPanel jPanel1;

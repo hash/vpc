@@ -3,6 +3,10 @@
  */
 package vpc_conf;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
@@ -17,7 +21,15 @@ public class Vpc_confApp
      */
     @Override
     protected void startup(){
-        show(new Vpc_confView(this));
+        try {
+            show(new Vpc_confView(this));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Vpc_confApp.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Vpc_confApp.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

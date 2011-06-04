@@ -9,9 +9,28 @@ package vpc_conf;
  * @author hash
  */
 public class VoiceCommand {
+    
+    public String name, command, request;
 
-    private String acoustic, command, name;
-
+    public VoiceCommand(String name, String command, String request){
+        this.request = request;
+        this.command = command;
+        this.name = name;
+    }
+    
+    public String To_cmdlist_File()
+    {        
+        return name + "\t" + command + "\t" + request + "\r\n";
+    }
+    
+    public String To_gram_File(boolean ostatni)
+    {
+        if(ostatni == false)
+            return  command + " | ";
+        else
+            return command + ";";
+    }
+    
     public String getCommand(){
         return command;
     }
@@ -28,18 +47,12 @@ public class VoiceCommand {
         this.name = name;
     }
 
-    public void setAcoustic(String acoustic){
-        this.acoustic = acoustic;
+    public void setRequest(String request){
+        this.request = request;
     }
 
-    public String getAcoustic(){
-        return acoustic;
-    }
-
-    public VoiceCommand(String acoustic, String command, String name){
-        this.acoustic = acoustic;
-        this.command = command;
-        this.name = name;
+    public String getRequest(){
+        return request;
     }
 
     @Override
@@ -47,10 +60,10 @@ public class VoiceCommand {
         return getName();
     }
 
-    @Override
+   /*@Override
     public boolean equals(Object obj){
         if (obj instanceof VoiceCommand) {
-            return acoustic.equals(((VoiceCommand)obj).acoustic);
+            return request.equals(((VoiceCommand)obj).request);
         }
         return false;
     }
@@ -58,7 +71,7 @@ public class VoiceCommand {
     @Override
     public int hashCode(){
         int hash = 7;
-        hash = 19 * hash + (this.acoustic != null ? this.acoustic.hashCode() : 0);
+        hash = 19 * hash + (this.request != null ? this.request.hashCode() : 0);
         return hash;
-    }
+    }*/
 }

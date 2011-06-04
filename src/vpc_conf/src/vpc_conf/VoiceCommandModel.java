@@ -5,54 +5,45 @@
 package vpc_conf;
 
 import java.util.ArrayList;
-import java.util.List;
-import javax.swing.DefaultListModel;
+import javax.swing.table.AbstractTableModel;
 
 /**
  *
  * @author hash
  */
-public class VoiceCommandModel extends DefaultListModel {
+public class VoiceCommandModel extends AbstractTableModel {
 
-    private List<VoiceCommand> vcl = new ArrayList<VoiceCommand>();
-    private static VoiceCommandModel single = null;
+    ArrayList<VoiceCommand> vcl = new ArrayList<VoiceCommand>();
 
-    private VoiceCommandModel(){
-        VoiceCommand bla = new VoiceCommand("blabla", "run blabla", "bla");
-        for (int i = 0, s = 10 ; i < s ; i++) {
-            vcl.add(bla);
-        }
-    }
-
-    public static VoiceCommandModel getModel(){
-        if (single == null) {
-            single = new VoiceCommandModel();
-        }
-        return single;
-    }
-
-    @Override
-    public int getSize(){
+    public int getRowCount() {
         return vcl.size();
     }
 
-    @Override
-    public Object getElementAt(int index){
-        return vcl.get(index);
+    public int getColumnCount() {
+        return 4;
+    }
+    
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        switch(columnIndex)
+        {
+            case 0: return rowIndex+1;
+            case 1: return vcl.get(rowIndex).name;
+            case 2: return vcl.get(rowIndex).command;
+            case 3: return vcl.get(rowIndex).request;
+            default: return "!!!";
+        }
     }
 
     @Override
-    public void addElement(Object obj){
-        vcl.add((VoiceCommand)obj);
-    }
-
-    @Override
-    public Object set(int index, Object element){
-        return vcl.set(index, (VoiceCommand)element);
-    }
-
-    @Override
-    public Object remove(int index){
-        return vcl.remove(index);
+    public String getColumnName(int kol)
+    {
+        switch(kol)
+        {
+            case 0: return "Lp.";
+            case 1: return "Nazwa";
+            case 2: return "Komenda";
+            case 3: return "Wykonaj";
+            default: return "!!!";
+        }
     }
 }

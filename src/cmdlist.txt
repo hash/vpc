@@ -1,4 +1,4 @@
-run browser	C:\\Documents and Settings\\35\\Ustawienia lokalne\\Dane aplikacji\\Google\\Chrome\\Application\\chrome.exe
-run music	D:\\Program Files\\foobar2000\\foobar2000.exe
-run notes	D:\\Program Files\\notepad++\\notepad++.exe
-run mail	D:\\Program Files\\Mozilla Thunderbird\\thunderbird.exe
+chrome	run browser	C:\\Documents and Settings\\35\\Ustawienia lokalne\\Dane aplikacji\\Google\\Chrome\\Application\\chrome.exe
+nazwa	run music	D:\\Program Files\\foobar2000\\foobar2000.exe
+nazwa	run notes	D:\\Program Files\\notepad++\\notepad++.exe
+mail	run mail	D:\\Program Files\\Mozilla Thunderbird\\thunderbird.exe

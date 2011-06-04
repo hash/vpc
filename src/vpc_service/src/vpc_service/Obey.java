@@ -87,7 +87,7 @@ public class Obey {
         while((s = br.readLine()) != null)
         {
             if(s.contains("\t"))
-                cmdList.put(s.split("\t")[0], s.split("\t")[1]);
+                cmdList.put(s.split("\t")[1], s.split("\t")[2]);
             else 
                 cmdList.put(s, " ");
 	}
