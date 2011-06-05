@@ -73,7 +73,6 @@
                   <action class="vpc_conf.Vpc_confView" id="TestBox" methodName="TestBox"/>
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="test.text"/>
-                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="test" noResource="true"/>
               </Properties>
             </Component>
@@ -83,7 +82,6 @@
                   <action class="vpc_conf.Vpc_confView" id="showEditVCDialog" methodName="showEditVCDialog"/>
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="komenda.text"/>
-                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="komenda" noResource="true"/>
               </Properties>
             </Component>
@@ -93,7 +91,6 @@
                   <action class="vpc_conf.Vpc_confView" id="DeleteVC" methodName="DeleteVC"/>
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="usun.text"/>
-                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="usun" noResource="true"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                   <ComponentRef name="VoiceCommands"/>
@@ -161,7 +158,6 @@
                   <action class="vpc_conf.Vpc_confView" id="DeleteVC" methodName="DeleteVC"/>
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="usunMenu.text"/>
-                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="usunMenu" noResource="true"/>
               </Properties>
               <AuxValues>
@@ -213,6 +209,7 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="vpc_conf.Vpc_confView" id="showAboutBox" methodName="showAboutBox"/>
                 </Property>
+                <Property name="text" type="java.lang.String" resourceKey="aboutMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="aboutMenuItem" noResource="true"/>
               </Properties>
               <AuxValues>

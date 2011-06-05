@@ -316,17 +316,14 @@ public class Vpc_confView extends FrameView {
         test.setAction(actionMap.get("TestBox")); // NOI18N
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(vpc_conf.Vpc_confApp.class).getContext().getResourceMap(Vpc_confView.class);
         test.setText(resourceMap.getString("test.text")); // NOI18N
-        test.setEnabled(false);
         test.setName("test"); // NOI18N
 
         komenda.setAction(actionMap.get("showEditVCDialog")); // NOI18N
         komenda.setText(resourceMap.getString("komenda.text")); // NOI18N
-        komenda.setEnabled(false);
         komenda.setName("komenda"); // NOI18N
 
         usun.setAction(actionMap.get("DeleteVC")); // NOI18N
         usun.setText(resourceMap.getString("usun.text")); // NOI18N
-        usun.setEnabled(false);
         usun.setName("usun"); // NOI18N
         usun.setNextFocusableComponent(VoiceCommands);
 
@@ -393,7 +390,6 @@ public class Vpc_confView extends FrameView {
 
         usunMenu.setAction(actionMap.get("DeleteVC")); // NOI18N
         usunMenu.setText(resourceMap.getString("usunMenu.text")); // NOI18N
-        usunMenu.setEnabled(false);
         usunMenu.setName("usunMenu"); // NOI18N
         fileMenu.add(usunMenu);
 
@@ -417,6 +413,7 @@ public class Vpc_confView extends FrameView {
         helpMenu.setName("helpMenu"); // NOI18N
 
         aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        aboutMenuItem.setText(resourceMap.getString("aboutMenuItem.text")); // NOI18N
         aboutMenuItem.setName("aboutMenuItem"); // NOI18N
         helpMenu.add(aboutMenuItem);
 

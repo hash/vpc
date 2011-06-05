@@ -219,6 +219,24 @@ public class AddVCDialog extends javax.swing.JDialog {
 
     @Action
     public boolean OKHide(){
+        
+        if(edit == false)
+        {
+            for(int i=0; i<ListaKomend.getRowCount(); i++)
+            {
+                if(ListaKomend.vcl.get(i).getCommand().equals(textCommand.getText()))
+                {
+                   JOptionPane.showConfirmDialog(
+                        this,
+                        "Ta komenda jest już zarezerwowana, wybierz inną.",
+                        "Błąd!",
+                        JOptionPane.PLAIN_MESSAGE,
+                        JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        }
+        
         LTS lts = new LTS();
         if (!lts.cmdExists(textCommand.getText())) {
             if (JOptionPane.showConfirmDialog(
