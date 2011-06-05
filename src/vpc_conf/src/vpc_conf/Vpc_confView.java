@@ -3,6 +3,10 @@
  */
 package vpc_conf;
 
+import edu.cmu.sphinx.frontend.util.Microphone;
+import edu.cmu.sphinx.recognizer.Recognizer;
+import edu.cmu.sphinx.result.Result;
+import edu.cmu.sphinx.util.props.ConfigurationManager;
 import java.awt.Dimension;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
@@ -24,6 +28,8 @@ import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  * The application's main frame.
@@ -93,6 +99,23 @@ public class Vpc_confView extends FrameView {
                 }
             }
         });
+        
+//Przyciski dolne i "usuń" w menu DISABLED, jeśli żadna pozycja w tabeli nie zaznaczona
+        VoiceCommands.getSelectionModel().addListSelectionListener(new ListSelectionListener()
+        {
+            @Override
+            public void valueChanged(ListSelectionEvent e)
+            {
+                if (!e.getValueIsAdjusting())
+                {
+                    boolean rowsAreSelected = VoiceCommands.getSelectedRowCount() > 0;
+                    test.setEnabled(rowsAreSelected);
+                    komenda.setEnabled(rowsAreSelected);
+                    usun.setEnabled(rowsAreSelected);
+                    usunMenu.setEnabled(rowsAreSelected);
+                }
+            }
+        });
     }
 
     public int getTableRow()
@@ -149,7 +172,53 @@ public class Vpc_confView extends FrameView {
         
         Zapis();
     }    
-        
+    
+    @Action
+    public void TestBox()
+    {
+        if(getTableRow() != -1)
+        {
+            if(JOptionPane.showConfirmDialog(mainPanel, "Naciśnij OK i wypowiedz po chwili wybraną komendę", "Test wymowy komendy głosowej", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.OK_OPTION)
+            {
+                ConfigurationManager cm;
+                cm = new ConfigurationManager(Vpc_confView.class.getResource("vpc_conf.config.xml"));
+                
+                Recognizer recognizer = (Recognizer) cm.lookup("recognizer");
+                recognizer.allocate();
+                
+                Microphone microphone = (Microphone) cm.lookup("microphone");
+                if (!microphone.startRecording()) {
+                    System.out.println("Cannot start microphone.");
+                    recognizer.deallocate();
+                    System.exit(1);
+                }
+                
+                // loop the recognition until the programm exits.
+                while (true) {
+
+                    Result result = recognizer.recognize();
+
+                    if (result != null) {
+                        String resultText = result.getBestFinalResultNoFiller();
+                       
+                        if(ListaKomend.vcl.get(getTableRow()).getCommand().equals(resultText))
+                        {
+                            JOptionPane.showConfirmDialog(mainPanel, "Gratulacje, wypowiedziałeś \"" + resultText + "\" poprawnie!", "Wynik testu", JOptionPane.PLAIN_MESSAGE, JOptionPane.INFORMATION_MESSAGE);
+                            break;
+                        }
+                        else
+                        {
+                            if (JOptionPane.showConfirmDialog(mainPanel, "Błąd! Wypowiediałeś komendę źle. \r\nNaciśnij OK, i spróbój jeszcze raz", "Wynik testu", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) ==  JOptionPane.OK_OPTION)
+                                continue;
+                            else
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    } 
+    
     private void Odczyt_cmdlist() throws FileNotFoundException, IOException
     {
         FileReader fr = new FileReader("../config/cmdlist.txt");
@@ -219,7 +288,7 @@ public class Vpc_confView extends FrameView {
 
         mainPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        glos = new javax.swing.JButton();
+        test = new javax.swing.JButton();
         komenda = new javax.swing.JButton();
         usun = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -243,18 +312,21 @@ public class Vpc_confView extends FrameView {
 
         jPanel1.setName("jPanel1"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(vpc_conf.Vpc_confApp.class).getContext().getResourceMap(Vpc_confView.class);
-        glos.setText(resourceMap.getString("glos.text")); // NOI18N
-        glos.setEnabled(false);
-        glos.setName("glos"); // NOI18N
-
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(vpc_conf.Vpc_confApp.class).getContext().getActionMap(Vpc_confView.class, this);
+        test.setAction(actionMap.get("TestBox")); // NOI18N
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(vpc_conf.Vpc_confApp.class).getContext().getResourceMap(Vpc_confView.class);
+        test.setText(resourceMap.getString("test.text")); // NOI18N
+        test.setEnabled(false);
+        test.setName("test"); // NOI18N
+
         komenda.setAction(actionMap.get("showEditVCDialog")); // NOI18N
         komenda.setText(resourceMap.getString("komenda.text")); // NOI18N
+        komenda.setEnabled(false);
         komenda.setName("komenda"); // NOI18N
 
         usun.setAction(actionMap.get("DeleteVC")); // NOI18N
         usun.setText(resourceMap.getString("usun.text")); // NOI18N
+        usun.setEnabled(false);
         usun.setName("usun"); // NOI18N
         usun.setNextFocusableComponent(VoiceCommands);
 
@@ -264,7 +336,7 @@ public class Vpc_confView extends FrameView {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(glos)
+                .addComponent(test)
                 .addGap(18, 18, 18)
                 .addComponent(komenda, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -276,7 +348,7 @@ public class Vpc_confView extends FrameView {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(glos)
+                    .addComponent(test)
                     .addComponent(komenda)
                     .addComponent(usun))
                 .addContainerGap())
@@ -303,10 +375,10 @@ public class Vpc_confView extends FrameView {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -321,6 +393,7 @@ public class Vpc_confView extends FrameView {
 
         usunMenu.setAction(actionMap.get("DeleteVC")); // NOI18N
         usunMenu.setText(resourceMap.getString("usunMenu.text")); // NOI18N
+        usunMenu.setEnabled(false);
         usunMenu.setName("usunMenu"); // NOI18N
         fileMenu.add(usunMenu);
 
@@ -389,7 +462,6 @@ public class Vpc_confView extends FrameView {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AddVC;
     private javax.swing.JTable VoiceCommands;
-    private javax.swing.JButton glos;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -401,6 +473,7 @@ public class Vpc_confView extends FrameView {
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
+    private javax.swing.JButton test;
     private javax.swing.JButton usun;
     private javax.swing.JMenuItem usunMenu;
     // End of variables declaration//GEN-END:variables
