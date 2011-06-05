@@ -1,15 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * AddVCDialog.java
- *
- * Created on 2011-06-02, 18:49:24
- */
 package vpc_conf;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
@@ -25,22 +17,22 @@ public class AddVCDialog extends javax.swing.JDialog {
     private int tableRow;
 
     /** Creates new form AddVCDialog */
-    public AddVCDialog(java.awt.Frame parent, boolean modal, VoiceCommandModel ListaKomend, boolean edit, int tableRow){
+    public AddVCDialog(java.awt.Frame parent, boolean modal,
+            VoiceCommandModel ListaKomend, boolean edit, int tableRow){
         super(parent, modal);
         initComponents();
-        
+
         this.ListaKomend = ListaKomend;
         this.edit = edit;
         this.tableRow = tableRow;
-        
+
         emptyAll();
-        
-        if(edit)
-        {
-            textName.setText(ListaKomend.vcl.get(tableRow).name);
-            textCommand.setText(ListaKomend.vcl.get(tableRow).command);
-            textRequest.setText(ListaKomend.vcl.get(tableRow).request);
-            textOptions.setText(ListaKomend.vcl.get(tableRow).options);
+
+        if (edit) {
+            textName.setText(ListaKomend.vcl.get(tableRow).getName());
+            textCommand.setText(ListaKomend.vcl.get(tableRow).getCommand());
+            textRequest.setText(ListaKomend.vcl.get(tableRow).getRequest());
+            textOptions.setText(ListaKomend.vcl.get(tableRow).getOptions());
         }
         textCommandKeyTyped(null);
     }
@@ -215,40 +207,52 @@ public class AddVCDialog extends javax.swing.JDialog {
             }
         });
     }
-    
+
     @Action
-    public void browseBox()
-    {
+    public void browseBox(){
         JFileChooser fc = new JFileChooser();
-        if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             this.textRequest.setText(fc.getSelectedFile().getPath());
             textCommandKeyTyped(null);
         }
     }
-    
+
     @Action
     public boolean OKHide(){
         LTS lts = new LTS();
-        if(!lts.cmdExists(textCommand.getText())) {
-            if(JOptionPane.showConfirmDialog(
-                    this, 
-                    "Słowo nie występuje w słowniku! Chcesz je dodać?", 
-                    "Błąd!", 
+        if (!lts.cmdExists(textCommand.getText())) {
+            if (JOptionPane.showConfirmDialog(
+                    this,
+                    "Słowo nie występuje w słowniku! Chcesz je dodać?",
+                    "Błąd!",
                     JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
-                lts.getLTS(textCommand.getText());
-            else return false;
+                    JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                try {
+                    lts.addToDict();
+                } catch (FileNotFoundException ex) {
+                    JOptionPane.showMessageDialog(null,
+                                                  "Nie znaleziono pliku słownika! "
+                                                  + "Sprawdź czy wszystkie pliki są na swoich miejscach i spróbuj "
+                                                  + "ponownie uruchomić aplikacje");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null,
+                                                  "Nie można odczytać pliku!");
+                }
+            } else {
+                return false;
+            }
         }
-        if(edit)
-        {
-            ListaKomend.vcl.get(tableRow).name = textName.getText();
-            ListaKomend.vcl.get(tableRow).command = textCommand.getText();
-            ListaKomend.vcl.get(tableRow).request = textRequest.getText();
-            ListaKomend.vcl.get(tableRow).options = textOptions.getText();
+        if (edit) {
+            ListaKomend.vcl.get(tableRow).setName(textName.getText());
+            ListaKomend.vcl.get(tableRow).setCommand(textCommand.getText());
+            ListaKomend.vcl.get(tableRow).setRequest(textRequest.getText());
+            ListaKomend.vcl.get(tableRow).setOptions(textOptions.getText());
+        } else {
+            ListaKomend.vcl.add(new VoiceCommand(textName.getText(),
+                                                 textCommand.getText(),
+                                                 textRequest.getText(),
+                                                 textOptions.getText()));
         }
-        else
-            ListaKomend.vcl.add(new VoiceCommand(textName.getText(), textCommand.getText(), textRequest.getText(), textOptions.getText()));
-
         this.dispose();
         ListaKomend.fireTableDataChanged();
         setVisible(false);

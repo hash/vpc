@@ -10,7 +10,7 @@ package vpc_conf;
  */
 public class VoiceCommand {
     
-    public String name, command, request, options = "";
+    private String name, command, request, options = "";
 
     public VoiceCommand(String name, String command, String request){
         this.request = request.replace("\"", ""); //usuwa nadprogramowe cudzysłowy
@@ -63,6 +63,14 @@ public class VoiceCommand {
 
     public String getRequest(){
         return request;
+    }    
+    
+    public String getOptions(){
+        return options;
+    }
+    
+    public void setOptions(String options){
+        this.options = options;
     }
 
     @Override
@@ -84,4 +92,6 @@ public class VoiceCommand {
         hash = 19 * hash + (this.request != null ? this.request.hashCode() : 0);
         return hash;
     }*/
+
+
 }

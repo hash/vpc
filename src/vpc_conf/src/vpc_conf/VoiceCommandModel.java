@@ -27,10 +27,10 @@ public class VoiceCommandModel extends AbstractTableModel {
         switch(columnIndex)
         {
             case 0: return rowIndex+1;
-            case 1: return vcl.get(rowIndex).name;
-            case 2: return vcl.get(rowIndex).command;
-            case 3: return vcl.get(rowIndex).request;
-            case 4: return vcl.get(rowIndex).options;
+            case 1: return vcl.get(rowIndex).getName();
+            case 2: return vcl.get(rowIndex).getCommand();
+            case 3: return vcl.get(rowIndex).getRequest();
+            case 4: return vcl.get(rowIndex).getOptions();
             default: return "!!!";
         }
     }
