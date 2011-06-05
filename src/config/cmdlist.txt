@@ -3,4 +3,3 @@ music	run music	D:\Program Files\foobar2000\foobar2000.exe
 notes	run notes	D:\Program Files\notepad++\notepad++.exe
 mail	run mail	D:\Program Files\Mozilla Thunderbird\thunderbird.exe
 play	run and play	"D:\Program Files\foobar2000\foobar2000.exe"	/command:Play
-asd	befsztyk	C:\Users\kazaam\Documents\Install Dragon Age 2.log
