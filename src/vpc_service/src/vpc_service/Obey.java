@@ -1,4 +1,3 @@
-
 package vpc_service;
 
 
@@ -11,28 +10,51 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import javax.swing.JOptionPane;
+/**
+ * Klasa obsługi komend, przechowuje listę komend w kontenerze HashMap.
+ */
 public class Obey {
 
+    /**
+     * Mapa przechowująca listę komend i ścieżki do uruchamianych aplikacji i zmienne 
+     * pomocnicze mapy. 
+     */
     private HashMap<String,String> cmdList;
     private Set set;
     private Iterator it;
+    /**
+     * Objekt typu Command obsługujący wbudowane komendy emulujące skróty klawiszowe.
+     */
     private Command command;
-    
+    /**
+     * Konstruktor, inicjalizuje obiekt klasy Command, wywołuje metodę zczytującą
+     * plik komend
+     * @throws AWTException błąd inicjalizacji obiektu Command
+     */
     public Obey() throws AWTException
     {   
         command = new Command();
         try {
             readCmdList();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Obey.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Nie można znaleźć pliku komend! "
+                    + "Sprawdź lokalizację i uruchom ponownie aplikacje.");
+            ex.printStackTrace();
+            return;
         } catch (IOException ex) {
-            Logger.getLogger(Obey.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Błąd odczytu pliku!");
+            ex.printStackTrace();
+            return;
         }
     }
 
+    /**
+     * Metoda obsługi komendy, sprawdza typ komendy (action/run) i wykonuję zadanie.
+     * @param cmd   Obiekt String przechowujący rozpoznaną przez Recognizer komendę.
+     * @throws IOException błąd odczytu obiektu Runtime przy uruchamianiu aplikacji
+     * @throws AWTException błąd wykonywania komendy-skrótu
+     */
     public void command(String cmd) throws IOException, AWTException
     {
         Runtime rt = Runtime.getRuntime();
@@ -82,6 +104,11 @@ public class Obey {
         }
     }
     
+    /**
+     * Wczytywanie listy komend i wprowadzanie ich do hash-mapy.
+     * @throws FileNotFoundException Brak pliku komend
+     * @throws IOException Błąd odczytu pliku
+     */
     private void readCmdList() throws FileNotFoundException, IOException
     {
         cmdList = new HashMap();
@@ -104,7 +131,9 @@ public class Obey {
         it = set.iterator();
     }
     
-    //Metoda wyświetlająca dostępne komendy
+    /**
+     * Metoda wyświetlająca dostępne komendy (tylko konsola)
+     */
     public void cmdList()
     {
         while(it.hasNext())
