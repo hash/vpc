@@ -1,5 +1,0 @@
-chrome	run browser	C:\Documents and Settings\35\Ustawienia lokalne\Dane aplikacji\Google\Chrome\Application\chrome.exe
-music	run music	D:\Program Files\foobar2000\foobar2000.exe
-notes	run notes	D:\Program Files\notepad++\notepad++.exe
-mail	run mail	D:\Program Files\Mozilla Thunderbird\thunderbird.exe
-play	run and play	"D:\Program Files\foobar2000\foobar2000.exe"	/command:Play

@@ -3,8 +3,6 @@ package vpc_service;
 
 
 import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -18,15 +16,14 @@ import java.util.logging.Logger;
 
 public class Obey {
 
-    private Robot r;
     private HashMap<String,String> cmdList;
     private Set set;
     private Iterator it;
+    private Command command;
     
     public Obey() throws AWTException
-    {
-        r = new Robot();
-        
+    {   
+        command = new Command();
         try {
             readCmdList();
         } catch (FileNotFoundException ex) {
@@ -50,47 +47,44 @@ public class Obey {
                     return;
                 }
             }
-        } else if (cmd.split(" ")[0].equals("close")) {  
-             r.keyPress(KeyEvent.VK_ALT);
-             r.keyPress(KeyEvent.VK_F4);
-             r.keyRelease(KeyEvent.VK_ALT);
-             r.keyRelease(KeyEvent.VK_F4);             
-        } else if (cmd.equals("hide all")) {
-             r.keyPress(KeyEvent.VK_WINDOWS);
-             r.keyPress(KeyEvent.VK_M);
-             r.keyRelease(KeyEvent.VK_WINDOWS);
-             r.keyRelease(KeyEvent.VK_M);            
-        } else if (cmd.equals("show all")) {            
-             r.keyPress(KeyEvent.VK_WINDOWS);
-             r.keyPress(KeyEvent.VK_SHIFT);
-             r.keyPress(KeyEvent.VK_M);
-             r.keyRelease(KeyEvent.VK_WINDOWS);
-             r.keyRelease(KeyEvent.VK_SHIFT); 
-             r.keyRelease(KeyEvent.VK_M);             
-        } else if (cmd.equals("scroll down")) {    
-             r.keyPress(KeyEvent.VK_PAGE_DOWN);
-             r.keyRelease(KeyEvent.VK_PAGE_DOWN);             
-        } else if (cmd.equals("scroll up")) {             
-             r.keyPress(KeyEvent.VK_PAGE_UP);
-             r.keyRelease(KeyEvent.VK_PAGE_UP);             
+        } else if(cmd.split(" ")[0].equals("action")) {
+             if (cmd.split(" ")[1].equals("close")) {  
+                 command.close();
+            } else if (cmd.split(" ")[1].equals("hide")) {
+                 command.hideAll();
+            } else if (cmd.split(" ")[1].equals("show")) {            
+                 command.showAll();
+            } else if(cmd.split(" ")[1].equals("scroll")) {
+                if (cmd.split(" ")[2].equals("down")) {    
+                     command.scrollDown();
+                } else if (cmd.split(" ")[2].equals("up")) {             
+                     command.scrollUp();
+                }
+            } else if (cmd.split(" ")[1].equals("search")) {            
+                 command.search();
+            } else if (cmd.split(" ")[1].equals("save")) {            
+                 command.save();
+            }else if(cmd.split(" ")[1].equals("switch")) {
+                if (cmd.split(" ")[2].equals("left")) {    
+                     command.switchLeft();
+                } else if (cmd.split(" ")[2].equals("right")) {             
+                     command.switchRight();
+                }
+            }
         }
 
     }
     
-    //metody do zczytywania listy komend z z pliku, jeszcze nie dziala
     private void readCmdList() throws FileNotFoundException, IOException
     {
         cmdList = new HashMap();
-        FileReader fr = new FileReader("../cmdlist.txt");
+        FileReader fr = new FileReader("../config/cmdlist.txt");
         BufferedReader br = new BufferedReader(fr);
         String s;
         while((s = br.readLine()) != null)
         {
             if(s.contains("\t"))
-                if(s.split("\t").length == 4)
-                    cmdList.put(s.split("\t")[1], s.split("\t")[2] + " " + s.split("\t")[3]);
-                else
-                    cmdList.put(s.split("\t")[1], s.split("\t")[2]);
+                cmdList.put(s.split("\t")[0], s.split("\t")[1]);
             else 
                 cmdList.put(s, " ");
 	}
@@ -107,5 +101,6 @@ public class Obey {
             Map.Entry me = (Map.Entry)it.next();
             System.out.println(me.getKey() + " : " + me.getValue());
         }
+        System.out.println("show all | close | hide all | switch right | switch left | scroll down | scroll up | cancel | search | save");
     }
 }

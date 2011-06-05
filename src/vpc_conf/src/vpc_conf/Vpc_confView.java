@@ -152,7 +152,7 @@ public class Vpc_confView extends FrameView {
         
     private void Odczyt_cmdlist() throws FileNotFoundException, IOException
     {
-        FileReader fr = new FileReader("../cmdlist.txt");
+        FileReader fr = new FileReader("../config/cmdlist.txt");
         BufferedReader br = new BufferedReader(fr);
         String s;
         while((s = br.readLine()) != null)
@@ -170,7 +170,7 @@ public class Vpc_confView extends FrameView {
         try
         {
 //zapis komend do cmdlist.txt
-            FileWriter fw = new FileWriter("../cmdlist.txt");
+            FileWriter fw = new FileWriter("../config/cmdlist.txt");
             BufferedWriter bw = new BufferedWriter(fw);
 
             for(VoiceCommand vc : ListaKomend.vcl)
@@ -182,7 +182,7 @@ public class Vpc_confView extends FrameView {
             fw.close();
             
 //zapis komend do VPC.gram
-            fw = new FileWriter("../VPC.gram");
+            fw = new FileWriter("../config/VPC.gram");
             bw = new BufferedWriter(fw);
 
             bw.write("#JSGF V1.0;\r\n\r\ngrammar VPC;\r\n\r\npublic <global> = show all | close | hide all | switch right | switch left | scroll down | scroll up | cancel | search | save;\r\n\r\npublic <run> = ");

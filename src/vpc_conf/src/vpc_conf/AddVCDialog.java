@@ -11,6 +11,7 @@
 package vpc_conf;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
 
 /**
@@ -41,6 +42,7 @@ public class AddVCDialog extends javax.swing.JDialog {
             textRequest.setText(ListaKomend.vcl.get(tableRow).request);
             textOptions.setText(ListaKomend.vcl.get(tableRow).options);
         }
+        textCommandKeyTyped(null);
     }
 
     /** This method is called from within the constructor to
@@ -218,12 +220,25 @@ public class AddVCDialog extends javax.swing.JDialog {
     public void browseBox()
     {
         JFileChooser fc = new JFileChooser();
-        fc.showOpenDialog(null);
-        this.textRequest.setText(fc.getSelectedFile().getPath());
+        if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            this.textRequest.setText(fc.getSelectedFile().getPath());
+            textCommandKeyTyped(null);
+        }
     }
     
     @Action
-    public void OKHide(){
+    public boolean OKHide(){
+        LTS lts = new LTS();
+        if(!lts.cmdExists(textCommand.getText())) {
+            if(JOptionPane.showConfirmDialog(
+                    this, 
+                    "Słowo nie występuje w słowniku! Chcesz je dodać?", 
+                    "Błąd!", 
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
+                lts.getLTS(textCommand.getText());
+            else return false;
+        }
         if(edit)
         {
             ListaKomend.vcl.get(tableRow).name = textName.getText();
@@ -238,6 +253,7 @@ public class AddVCDialog extends javax.swing.JDialog {
         ListaKomend.fireTableDataChanged();
         setVisible(false);
         emptyAll();
+        return true;
     }
 
     @Action
