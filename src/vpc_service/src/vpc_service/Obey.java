@@ -34,11 +34,11 @@ public class Obey {
     }
 
     public void command(String cmd) throws IOException, AWTException
-    {      
+    {
+        Runtime rt = Runtime.getRuntime();
+        
         if (cmd.split(" ")[0].equals("run"))
         {
-            Runtime rt = Runtime.getRuntime();
-            
             if(cmdList.containsKey(cmd))
             {
                 try {
@@ -48,16 +48,16 @@ public class Obey {
                 }
             }
         } else if(cmd.split(" ")[0].equals("action")) {
-             if (cmd.split(" ")[1].equals("close")) {  
+             if (cmd.split(" ")[1].equals("close")) {
                  command.close();
             } else if (cmd.split(" ")[1].equals("hide")) {
                  command.hideAll();
             } else if (cmd.split(" ")[1].equals("show")) {            
                  command.showAll();
             } else if(cmd.split(" ")[1].equals("scroll")) {
-                if (cmd.split(" ")[2].equals("down")) {    
+                if (cmd.split(" ")[2].equals("down")) {
                      command.scrollDown();
-                } else if (cmd.split(" ")[2].equals("up")) {             
+                } else if (cmd.split(" ")[2].equals("up")) {
                      command.scrollUp();
                 }
             } else if (cmd.split(" ")[1].equals("search")) {            
@@ -72,7 +72,14 @@ public class Obey {
                 }
             }
         }
-
+        else if(cmdList.containsKey(cmd))
+        {
+            try {
+                rt.exec(cmdList.get(cmd));
+            } catch (Exception e) {
+                return;
+            }
+        }
     }
     
     private void readCmdList() throws FileNotFoundException, IOException
@@ -84,9 +91,13 @@ public class Obey {
         while((s = br.readLine()) != null)
         {
             if(s.contains("\t"))
-                cmdList.put(s.split("\t")[0], s.split("\t")[1]);
+                if(s.split("\t").length == 4)
+                    cmdList.put(s.split("\t")[1], s.split("\t")[2] + " " + s.split("\t")[3]);
+                else
+                    cmdList.put(s.split("\t")[1], s.split("\t")[2]);
             else 
                 cmdList.put(s, " ");
+
 	}
         fr.close();
         set = cmdList.entrySet();
@@ -101,6 +112,6 @@ public class Obey {
             Map.Entry me = (Map.Entry)it.next();
             System.out.println(me.getKey() + " : " + me.getValue());
         }
-        System.out.println("show all | close | hide all | switch right | switch left | scroll down | scroll up | cancel | search | save");
+        System.out.println("action + (show all | close | hide all | switch right | switch left | scroll down | scroll up | cancel | search | save)");
     }
 }

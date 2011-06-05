@@ -121,7 +121,7 @@ public class Vpc_confView extends FrameView {
         Zapis();
     }
     
-        @Action
+    @Action
     public void showEditVCDialog() {
 
         if(getTableRow() != -1)
@@ -185,7 +185,7 @@ public class Vpc_confView extends FrameView {
             fw = new FileWriter("../config/VPC.gram");
             bw = new BufferedWriter(fw);
 
-            bw.write("#JSGF V1.0;\r\n\r\ngrammar VPC;\r\n\r\npublic <global> = show all | close | hide all | switch right | switch left | scroll down | scroll up | cancel | search | save;\r\n\r\npublic <run> = ");
+            bw.write("#JSGF V1.0;\r\n\r\ngrammar VPC;\r\n\r\npublic <action> = action <control>;\r\n\t<control> = show all | close | hide all | switch right | switch left | scroll down | scroll up | cancel | search | save;\r\n\r\npublic <run> = ");
             
             int i = 0;
             
