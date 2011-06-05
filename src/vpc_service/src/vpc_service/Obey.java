@@ -50,7 +50,7 @@ public class Obey {
     }
 
     /**
-     * Metoda obsługi komendy, sprawdza typ komendy (action/run) i wykonuję zadanie.
+     * Metoda obsługi komend, sprawdza typ komendy (action/run) i wykonuję zadanie.
      * @param cmd   Obiekt String przechowujący rozpoznaną przez Recognizer komendę.
      * @throws IOException błąd odczytu obiektu Runtime przy uruchamianiu aplikacji
      * @throws AWTException błąd wykonywania komendy-skrótu
@@ -119,6 +119,7 @@ public class Obey {
         {
             if(s.contains("\t"))
                 if(s.split("\t").length == 4)
+                    //przypadek z wczytywaniem dodatkowych opcji
                     cmdList.put(s.split("\t")[1], s.split("\t")[2] + " " + s.split("\t")[3]);
                 else
                     cmdList.put(s.split("\t")[1], s.split("\t")[2]);
@@ -141,6 +142,7 @@ public class Obey {
             Map.Entry me = (Map.Entry)it.next();
             System.out.println(me.getKey() + " : " + me.getValue());
         }
+        //wbudowane komentarze do obsługi podstawowych akcji windowsowskich (nieedytowalne, nieusuwalne)
         System.out.println("action + (show all | close | hide all | switch right | switch left | scroll down | scroll up | cancel | search | save)");
     }
 }

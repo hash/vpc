@@ -7,8 +7,7 @@ import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
 
 /**
- *
- * @author hash
+ * Klasa okna dodawania/edycji komendy
  */
 public class AddVCDialog extends javax.swing.JDialog {
 
@@ -16,7 +15,12 @@ public class AddVCDialog extends javax.swing.JDialog {
     private boolean edit;
     private int tableRow;
 
-    /** Creates new form AddVCDialog */
+    /**
+     * Konstruktor klasy przyjmujący jako parametr
+     * Model z listą komend
+     * informację o edycji/dodawaniu komendy
+     * numer wiersza w przypadku edycji komendy
+     */
     public AddVCDialog(java.awt.Frame parent, boolean modal,
             VoiceCommandModel ListaKomend, boolean edit, int tableRow){
         super(parent, modal);
@@ -208,6 +212,9 @@ public class AddVCDialog extends javax.swing.JDialog {
         });
     }
 
+    /**
+     * Okno z możliwością wyboru ścieżki do uruchamianej za pomocą głosu aplikacji
+     */
     @Action
     public void browseBox(){
         JFileChooser fc = new JFileChooser();
@@ -217,6 +224,10 @@ public class AddVCDialog extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Funkcja obsługująca edycję/dodawanie komendy,
+     * sprawdza czy wybrana komenda jest unikalna (zabezpieczenie)
+     */
     @Action
     public boolean OKHide(){
         

@@ -32,12 +32,20 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
- * The application's main frame.
+ * Główna formatka konfiguratora VPC
  */
 public class Vpc_confView extends FrameView {
 
+    /**
+     * Model przechowujący listę komend
+     */
     private VoiceCommandModel ListaKomend = new VoiceCommandModel();
     
+    /**
+     * Konstruktor, inicjalizuje i ustawia formatkę,
+     * wczytuje listę komend to tabeli
+     * obsługuje metodę nasłuchującą zdarzenia tabeli z komendami
+     */
     public Vpc_confView(SingleFrameApplication app) throws FileNotFoundException, IOException{
         super(app);
         JFrame frame = new JFrame("VPC konfigurator");
@@ -100,7 +108,11 @@ public class Vpc_confView extends FrameView {
             }
         });
         
-//Przyciski dolne i "usuń" w menu DISABLED, jeśli żadna pozycja w tabeli nie zaznaczona
+        /**
+         * Nasłuchiwanie zmian zdarzeń tabeli,
+         * w przypadku, gdy żadna pozycja z tabeli nie jest zaznaczona
+         * dolne przyciski konfiguratora oraz przyciski menu stają się wyszarzałe
+         */
         VoiceCommands.getSelectionModel().addListSelectionListener(new ListSelectionListener()
         {
             @Override
@@ -118,11 +130,17 @@ public class Vpc_confView extends FrameView {
         });
     }
 
+    /**
+     * Metoda pobierająca ilość wierszy tabeli
+     */
     public int getTableRow()
     {
         return VoiceCommands.getSelectedRow();
     }
     
+     /**
+      * Wyświetlanie Okna z informacjami o programie
+      */
     @Action
     public void showAboutBox(){
         if (aboutBox == null) {
@@ -133,6 +151,9 @@ public class Vpc_confView extends FrameView {
         Vpc_confApp.getApplication().show(aboutBox);
     }
 
+     /**
+      * Metoda wyświetlająca okno z dodawaniem komend
+      */
     @Action
     public void showAddVCDialog(){
         
@@ -144,6 +165,9 @@ public class Vpc_confView extends FrameView {
         Zapis();
     }
     
+     /**
+      * Metoda wyświetlająca okno z edycją komend
+      */
     @Action
     public void showEditVCDialog() {
 
@@ -158,6 +182,9 @@ public class Vpc_confView extends FrameView {
         Zapis();
     }
 
+     /**
+      * Metoda usuwająca komendę
+      */
     @Action
     public void DeleteVC()
     {
@@ -173,6 +200,9 @@ public class Vpc_confView extends FrameView {
         Zapis();
     }    
     
+     /**
+      * Metoda wyświetlająca okno z testem komendy
+      */
     @Action
     public void TestBox()
     {
@@ -219,6 +249,10 @@ public class Vpc_confView extends FrameView {
         }
     } 
     
+     /**
+      * Metoda odczytująca nazwy, komendy, ścieżki do aplikacji
+      * dane te są wczytywane do listy komend
+      */
     private void Odczyt_cmdlist() throws FileNotFoundException, IOException
     {
         FileReader fr = new FileReader("../config/cmdlist.txt");
@@ -234,11 +268,16 @@ public class Vpc_confView extends FrameView {
         fr.close();
     }
     
+    /**
+     * Metoda zapisująca komendy do plików
+     * cmdlist.txt - przechowuje listę komend, ich znazwę, ścieżki do aplikacji i informację o dodatkowych opcjach włączania aplikaji
+     * VPC.gram - plik przechowujący komendy głosowe (wykorzystywany przez bibliotekę sphinx-4)
+     */
     private void Zapis()
     {
         try
         {
-//zapis komend do cmdlist.txt
+            //zapis komend do cmdlist.txt
             FileWriter fw = new FileWriter("../config/cmdlist.txt");
             BufferedWriter bw = new BufferedWriter(fw);
 
@@ -250,7 +289,7 @@ public class Vpc_confView extends FrameView {
             bw.close();
             fw.close();
             
-//zapis komend do VPC.gram
+            //zapis komend do VPC.gram
             fw = new FileWriter("../config/VPC.gram");
             bw = new BufferedWriter(fw);
 

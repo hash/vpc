@@ -1,23 +1,27 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package vpc_conf;
 
 /**
- *
- * @author hash
+ * Klasa pojedynczej komendy głosowej
  */
 public class VoiceCommand {
     
+    /**
+     * Pola przechowujące informacje o komendach
+     */
     private String name, command, request, options = "";
-
+    
+    /**
+     * Konstruktor parametryczny wypełniający informacje o komendach
+     */
     public VoiceCommand(String name, String command, String request){
         this.request = request.replace("\"", ""); //usuwa nadprogramowe cudzysłowy
         this.command = command;
         this.name = name;
     }
     
+    /**
+     * Przeciążony konstruktor, posiada dodatkową informację o opcjach aplikacji
+     */
     public VoiceCommand(String name, String command, String request, String options){
         this.request = request.replace("\"", ""); //usuwa nadprogramowe cudzysłowy
         this.command = command;
@@ -25,6 +29,9 @@ public class VoiceCommand {
         this.options = options;
     }
     
+    /**
+     * Metoda zwracająca stringa użytego do zapisu pliku cmdlist.txt
+     */
     public String To_cmdlist_File()
     {     
         if(options.equals(""))
@@ -33,6 +40,9 @@ public class VoiceCommand {
             return name + "\t" + command + "\t\"" + request + "\"\t" + options  +"\r\n";
     }
     
+    /**
+     * Metoda zwracająca stringa użytego do zapisu pliku VPC.gram
+     */
     public String To_gram_File(boolean ostatni)
     {
         if(ostatni == false)
@@ -77,21 +87,4 @@ public class VoiceCommand {
     public String toString(){
         return getName();
     }
-
-   /*@Override
-    public boolean equals(Object obj){
-        if (obj instanceof VoiceCommand) {
-            return request.equals(((VoiceCommand)obj).request);
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode(){
-        int hash = 7;
-        hash = 19 * hash + (this.request != null ? this.request.hashCode() : 0);
-        return hash;
-    }*/
-
-
 }

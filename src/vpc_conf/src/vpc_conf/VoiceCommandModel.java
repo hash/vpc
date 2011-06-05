@@ -1,18 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package vpc_conf;
 
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 /**
- *
- * @author hash
+ * Klasa modelu przechowującego komendy głosowe
  */
 public class VoiceCommandModel extends AbstractTableModel {
 
+    /**
+     * Kontenet przechowujący listę komend
+     */
     ArrayList<VoiceCommand> vcl = new ArrayList<VoiceCommand>();
 
     public int getRowCount() {
