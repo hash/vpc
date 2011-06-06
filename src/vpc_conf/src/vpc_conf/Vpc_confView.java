@@ -336,8 +336,6 @@ public class Vpc_confView extends FrameView {
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         AddVC = new javax.swing.JMenuItem();
         usunMenu = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
@@ -432,13 +430,6 @@ public class Vpc_confView extends FrameView {
         usunMenu.setName("usunMenu"); // NOI18N
         fileMenu.add(usunMenu);
 
-        jSeparator1.setName("jSeparator1"); // NOI18N
-        fileMenu.add(jSeparator1);
-
-        jCheckBoxMenuItem1.setText(resourceMap.getString("jCheckBoxMenuItem1.text")); // NOI18N
-        jCheckBoxMenuItem1.setName("jCheckBoxMenuItem1"); // NOI18N
-        fileMenu.add(jCheckBoxMenuItem1);
-
         jSeparator2.setName("jSeparator2"); // NOI18N
         fileMenu.add(jSeparator2);
 
@@ -498,10 +489,8 @@ public class Vpc_confView extends FrameView {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AddVC;
     private javax.swing.JTable VoiceCommands;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JButton komenda;
     private javax.swing.JPanel mainPanel;

@@ -186,7 +186,7 @@
 
     <component name="speechClassifier"
                type="edu.cmu.sphinx.frontend.endpoint.SpeechClassifier">
-        <property name="threshold" value="25"/>
+        <property name="threshold" value="15"/>
     </component>
 
     <component name="nonSpeechDataFilter"
@@ -194,7 +194,7 @@
 
     <component name="speechMarker"
                type="edu.cmu.sphinx.frontend.endpoint.SpeechMarker" >
-        <property name="speechTrailer" value="300"/>
+        <property name="speechTrailer" value="200"/>
     </component>
 
 

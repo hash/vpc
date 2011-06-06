@@ -164,17 +164,6 @@
                 <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="Vpc_confView_usunMenu"/>
               </AuxValues>
             </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
-              <Properties>
-                <Property name="name" type="java.lang.String" value="jSeparator1" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="jCheckBoxMenuItem1">
-              <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jCheckBoxMenuItem1.text"/>
-                <Property name="name" type="java.lang.String" value="jCheckBoxMenuItem1" noResource="true"/>
-              </Properties>
-            </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
               <Properties>
                 <Property name="name" type="java.lang.String" value="jSeparator2" noResource="true"/>

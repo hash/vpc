@@ -5,7 +5,17 @@ import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.result.Result;
 import edu.cmu.sphinx.util.props.ConfigurationManager;
 import java.awt.AWTException;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 /**
  * Główna klasa usługi, nicjalizuje komponenty odpowiedzialne za nasłuchiwanie i 
@@ -26,7 +36,27 @@ public class Vpc_service {
      */
     public static void main(String[] args) throws IOException, AWTException {        
         o = new Obey();
+        SystemTray tray = SystemTray.getSystemTray();
+        Image img = Toolkit.getDefaultToolkit().getImage("../config/ico.png");
+        PopupMenu popup = new PopupMenu();
         
+        MenuItem mItem1 = new MenuItem("Zakończ");
+        mItem1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        popup.add(mItem1);        
+        TrayIcon trayIcon = new TrayIcon(img, "VoicePC", popup);
+        try {
+            tray.add(trayIcon);
+        } catch (AWTException e) {
+            JOptionPane.showMessageDialog(null, "Nie można zainicjalizować ikonki "
+                    + "zasobnika! Uruchom ponownie aplikację.");
+        }
+        
+
         /**
          * Inicjalizacja menadzera konfiguracji Sphinx
          */
